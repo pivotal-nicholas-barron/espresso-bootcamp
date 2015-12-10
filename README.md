@@ -32,7 +32,7 @@ Software:
 #####Description:
 
 Using the links above set up an androidTest directory and add your first test.
-Notice that the app crashes right away. Think about what you did that could cause the problem.
+Remove the test once it's working.
 
 ## Task #1: Exploring Espresso API
 
