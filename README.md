@@ -31,7 +31,7 @@ Software:
 
 #####Description:
 
-Using the links above set up an androidTest directory and add your first test.
+Using the links above set up an androidTest directory and add your first test. The idea behind having a test that waits to actually see the result.
 Remove the test once it's working.
 
 ## Task #1: Exploring Espresso API
