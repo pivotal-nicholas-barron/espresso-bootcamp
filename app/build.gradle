@@ -57,6 +57,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1'){
         exclude module: 'recyclerview-v7'
     }
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.1'
     // Espresso-web for WebView support
     androidTestCompile 'com.android.support.test.espresso:espresso-web:2.2.1'
     // Espresso-idling-resource for synchronization with background jobs
