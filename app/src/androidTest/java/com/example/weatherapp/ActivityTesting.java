@@ -62,8 +62,9 @@ public class ActivityTesting {
 
 
     //Task 1
+    //< 3 seconds to test
     @Test
-    public void displayValidForecastPreference() {
+    public void whenSettingsMenuIsOpened_ForecastPreferenceIsDisplayed() {
 
         openSettings();
 
@@ -72,8 +73,9 @@ public class ActivityTesting {
     }
 
     //Task 2
+    //< 3 seconds to test
     @Test
-    public void changeSettingsLocationAndCheckPersistence() {
+    public void whenLocationNameIsChanged_SettingsNowDisplay() {
 
         openSettings();
 
@@ -94,8 +96,9 @@ public class ActivityTesting {
     }
 
     //Task 3
+    //< 3 seconds to test
     @Test
-    public void pullUpToRefreshAndVerifySnackbar() {
+    public void whenUserPullsUpOnMainPage_CheckSnackbarAppears() {
 
         //pull down on main activity to refresh
         onView(withId(R.id.refresh_layout))
@@ -108,8 +111,9 @@ public class ActivityTesting {
     }
 
     //Task 4
+    //< 3 seconds to test
     @Test
-    public void changeTemperatureUnitsToImperial() {
+    public void whenChangeTemperatureUnitsToImperial_SettingsDisplaysUnitsAsImperial() {
 
         openSettings();
 
@@ -133,7 +137,7 @@ public class ActivityTesting {
     //Task 5
     //This is a simulation, does not exist in application
     @Ignore
-    public void getForecastCursorAndSelectTodaysForecast() {
+    public void whengetForecastCursorAndSelectTodaysForecast() {
 
         //get current date from Calendar
         DateTime dateTime = new DateTime();
@@ -145,6 +149,7 @@ public class ActivityTesting {
     }
 
     //Task 6
+    //< 3 seconds to test
     @Test
     public void clickOnLastElementInForecastList() {
 
@@ -155,6 +160,7 @@ public class ActivityTesting {
     }
 
     //Task 7
+    //< 3 seconds to test
     @Test
     public void checkCountOfItemsInMainRecyclerView() {
         onView(withId(R.id.recyclerview_forecast)).check(matches(withNItems(7)));

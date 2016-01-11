@@ -1,14 +1,21 @@
 package com.example.weatherapp;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.core.deps.dagger.Module;
+import android.support.test.espresso.core.deps.dagger.Provides;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.app.Instrumentation.ActivityResult;
 
+import com.example.weatherapp.activities.DetailsActivity;
 import com.example.weatherapp.activities.MainActivity;
+import com.example.weatherapp.activities.MainActivity$$InjectAdapter;
 import com.example.weatherapp.services.WeatherService;
 
 import org.hamcrest.Description;
@@ -37,6 +44,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.equalTo;
 
+import javax.inject.Inject;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -44,50 +52,48 @@ public class IntentTesting {
 
     private static final String TAG = "IntentTesting";
 
+    @Provides WeatherAppSharedPrefs provideSharedPrefs(){
+        return new WeatherAppSharedPrefs(mIntentRule.getActivity());
+    }
 
     @Rule
     public IntentsTestRule<MainActivity> mIntentRule = new IntentsTestRule<MainActivity>(MainActivity.class);
 
+    @Before
+    public void setUp(){
+
+        PreferenceManager.getDefaultSharedPreferences(mIntentRule.getActivity()).edit().clear().commit();
+        //Clear shared prefs
+        //sharedPrefs.getSharedPrefs().edit().clear().commit();
+        //sharedPrefs.setLocationPrefs(mIntentRule.getActivity().getString(R.string.preference_zip_default));
+
+    }
+
+    //Task 8
     @Test
-    public void checkMapIntentIsSent(){
+    public void whenMapIsCalled_MapIntentIsSent(){
 
-        //TODO clear value in zip and replace with default
-        //
-
-
-        String zip = mIntentRule.getActivity().getString(R.string.preference_zip_default); //TODO Zip is long form without country code, how to handle this better so it can be used in Uri?
-
-        //print the zip to the log
+        //get and print the zip to the log, this isn't so relevent when it isn't used in location URI
+        String zip = mIntentRule.getActivity().getString(R.string.preference_zip_default);
         Log.d(TAG, "Using Zip " + zip);
 
-        //Copied from MainActivityFragment class
+        //Copied from MainActivityFragment class with location name updated to match default
         Uri locationUri = Uri.parse("geo:0,0").buildUpon()
                 .appendQueryParameter("q", "Toronto,CA")
-                .build();//should be using zip here
+                .build();
+
+        //expect ACTION_VIEW to be called
+        intending(hasAction(Intent.ACTION_VIEW));
 
         Espresso.openActionBarOverflowOrOptionsMenu(mIntentRule.getActivity());
 
-        File filesDir = mIntentRule.getActivity().getFilesDir();
-
         onView(withText(R.string.action_map)).perform(click());
 
+        //CHeck that ACTION_VIEW has been called with location data
         intended(allOf(hasAction(Intent.ACTION_VIEW), hasData(locationUri)));
 
     }
-/*
-    private static Matcher<Intent> hasStringAsAttribute(final String zip){
-        return new TypeSafeMatcher<Intent>(Intent.class) {
-            @Override
-            protected boolean matchesSafely(Intent item) {
-                item.hasExtra();
-                return false;
-            }
 
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("\nCheck has text " + zip + "\n");
-            }
-        };
-    }
-*/
+    //Task 9
+
 }
