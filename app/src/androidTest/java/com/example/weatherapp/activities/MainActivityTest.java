@@ -5,8 +5,6 @@ import android.app.Instrumentation;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -16,6 +14,7 @@ import android.util.Log;
 import com.example.weatherapp.R;
 import com.example.weatherapp.WeatherAppSharedPrefs;
 import com.example.weatherapp.data.WeatherContract;
+import com.example.weatherapp.testUtils.TestConstants;
 
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
@@ -27,7 +26,6 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
-import static android.support.test.InstrumentationRegistry.getContext;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -69,7 +67,7 @@ public class MainActivityTest {
 
         getTargetContext()
                 .getSharedPreferences("com.example.weatherapp_preferences", 0).edit().clear().commit();
-        sharedPrefs.setLocationPrefs("Toronto,CA");
+        sharedPrefs.setLocationPrefs(TestConstants.DEFAULT_LOCATION);
     }
 
     //Task 0
@@ -92,13 +90,11 @@ public class MainActivityTest {
     @Test
     public void whenLocationNameIsChangedInSettings_ForecastPreferencesDisplayNewLocationName() {
 
-        String alternativeLocation = "Montreal,CA";
-
         openSettingsLinkInActionBar();
         onView(withText(R.string.preference_zip_title)).perform(click());
-        onView(withId(android.R.id.edit)).perform(clearText(), typeText(alternativeLocation));
+        onView(withId(android.R.id.edit)).perform(clearText(), typeText(TestConstants.ALTERNATIVE_LOCATION));
         onView(withText("OK")).perform(click());
-        onView(withText(alternativeLocation))
+        onView(withText(TestConstants.ALTERNATIVE_LOCATION))
                 .check(matches(isDisplayed()));
     }
 
@@ -106,10 +102,8 @@ public class MainActivityTest {
     @Test
     public void whenPullingUpOnMainScreen_SnackbarContainingLocationNameIsDisplayed() {
 
-        String alternativeLocation = "Montreal,CA";
-
         onView(withId(R.id.refresh_layout)).perform(swipeDown());
-        onView(allOf(withId(R.id.snackbar_text), withText(alternativeLocation)))
+        onView(allOf(withId(R.id.snackbar_text), withText(TestConstants.ALTERNATIVE_LOCATION)))
                 .check(matches(isDisplayed()));
     }
 
@@ -162,7 +156,7 @@ public class MainActivityTest {
     public void whenMapIsCalled_MapIntentIsSent(){
 
         Uri locationUri = Uri.parse("geo:0,0").buildUpon()
-                .appendQueryParameter("q", "Toronto,CA")
+                .appendQueryParameter("q", TestConstants.DEFAULT_LOCATION)
                 .build();
         Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, new Intent());
 

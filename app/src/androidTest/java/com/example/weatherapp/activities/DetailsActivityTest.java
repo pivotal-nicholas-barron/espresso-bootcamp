@@ -7,9 +7,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.example.weatherapp.WeatherAppSharedPrefs;
-import com.example.weatherapp.activities.DetailsActivity;
 import com.example.weatherapp.data.WeatherContract;
 import com.example.weatherapp.services.WeatherService;
+import com.example.weatherapp.testUtils.TestConstants;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -39,7 +39,7 @@ public class DetailsActivityTest {
     public void setUp() {
 
         getTargetContext().getSharedPreferences("com.example.weatherapp_preferences", 0).edit().clear().commit();
-        sharedPrefs.setLocationPrefs("Toronto,CA");
+        sharedPrefs.setLocationPrefs(TestConstants.DEFAULT_LOCATION);
     }
 
     @Test
