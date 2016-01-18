@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 public class WeatherAppSharedPrefs {
     Context context;
 
-    WeatherAppSharedPrefs(Context context) {
+    public WeatherAppSharedPrefs(Context context) {
         this.context = context;
     }
 

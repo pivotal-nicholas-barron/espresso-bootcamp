@@ -1,4 +1,4 @@
-package com.example.weatherapp;
+package com.example.weatherapp.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.weatherapp.WeatherAppSharedPrefs;
 import com.example.weatherapp.activities.DetailsActivity;
 import com.example.weatherapp.data.WeatherContract;
 import com.example.weatherapp.services.WeatherService;
