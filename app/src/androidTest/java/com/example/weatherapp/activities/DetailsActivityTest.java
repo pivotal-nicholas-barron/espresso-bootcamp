@@ -3,6 +3,7 @@ package com.example.weatherapp.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -32,18 +33,17 @@ public class DetailsActivityTest {
     @Rule
     public ActivityTestRule<DetailsActivity> mActivityRule = new ActivityTestRule(DetailsActivity.class, false, false);
 
-    @Inject
-    WeatherAppSharedPrefs sharedPrefs = new WeatherAppSharedPrefs(getTargetContext());
+    WeatherAppSharedPrefs sharedPrefs;
 
     @Before
     public void setUp() {
-
+        sharedPrefs = new WeatherAppSharedPrefs(InstrumentationRegistry.getTargetContext());
         getTargetContext().getSharedPreferences("com.example.weatherapp_preferences", 0).edit().clear().commit();
         sharedPrefs.setLocationPrefs(TestConstants.DEFAULT_LOCATION);
     }
 
     @Test
-    public void whenForecastDetailsPageIsLaunched_ExtendedForecastDetailsAreShown(){
+    public void whenForecastDetailsPageIsLaunched_ExtendedForecastDetailsAreShown() {
 
         DateTime sampleDate = new DateTime();
         mActivityRule.launchActivity(generateActivityDetailsIntent(sampleDate));
@@ -64,7 +64,7 @@ public class DetailsActivityTest {
         //pressure: <number> hPa
     }
 
-    private Intent generateActivityDetailsIntent(DateTime date){
+    private Intent generateActivityDetailsIntent(DateTime date) {
 
         Intent activityDetailsIntent = new Intent(getTargetContext(), DetailsActivity.class);
         long dateAsLong = date.withZone(DateTimeZone.getDefault()).withTimeAtStartOfDay().getMillis();

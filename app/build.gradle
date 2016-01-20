@@ -19,7 +19,7 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "String", "API_KEY", '"3eda4e81c48ef2640845a8b990b283e4"'
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.example.weatherapp.TestWeatherAppRunner"
     }
 
     buildTypes {

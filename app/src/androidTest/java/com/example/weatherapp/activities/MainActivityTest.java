@@ -5,13 +5,17 @@ import android.app.Instrumentation;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.runner.AndroidJUnitRunner;
+import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
 
 import com.example.weatherapp.R;
+import com.example.weatherapp.WeatherAppApplication;
 import com.example.weatherapp.WeatherAppSharedPrefs;
 import com.example.weatherapp.data.WeatherContract;
 import com.example.weatherapp.testUtils.TestConstants;
@@ -60,13 +64,14 @@ public class MainActivityTest {
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(com.example.weatherapp.activities.MainActivity.class);;
 
     @Inject
-    WeatherAppSharedPrefs sharedPrefs = new WeatherAppSharedPrefs(getTargetContext());
+    WeatherAppSharedPrefs sharedPrefs;
 
     @Before
     public void setUp(){
 
         getTargetContext()
                 .getSharedPreferences("com.example.weatherapp_preferences", 0).edit().clear().commit();
+        WeatherAppApplication.getInstance().inject(this);
         sharedPrefs.setLocationPrefs(TestConstants.DEFAULT_LOCATION);
     }
 
