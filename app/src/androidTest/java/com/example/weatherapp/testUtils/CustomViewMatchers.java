@@ -4,6 +4,7 @@ import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
 public class CustomViewMatchers {
@@ -13,7 +14,7 @@ public class CustomViewMatchers {
             int actual = 0;
 
             @Override
-            public void describeTo(org.hamcrest.Description description) {
+            public void describeTo(Description description) {
                 description.appendText("Check matches length: ");
                 description.appendText("\n Expected: " + numExpected);
                 description.appendText("\n but got: " + actual);

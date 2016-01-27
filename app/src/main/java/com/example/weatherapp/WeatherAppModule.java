@@ -25,7 +25,8 @@ import retrofit.Retrofit;
         DetailsActivityFragment.class,
         MainActivity.class,
         WeatherService.class,
-        WeatherProvider.class})
+        WeatherProvider.class
+})
 
 public class WeatherAppModule {
 

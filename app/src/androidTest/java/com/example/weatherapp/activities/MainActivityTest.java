@@ -86,7 +86,6 @@ public class MainActivityTest {
     //Task 1
     @Test
     public void whenSettingsMenuIsOpened_ForecastPreferenceTitleIsDisplayed() {
-
         openSettingsLinkInActionBar();
         onView(withText(R.string.preference_title)).check(matches(isDisplayed()));
     }
@@ -145,8 +144,8 @@ public class MainActivityTest {
 
         onView(withId(R.id.recyclerview_forecast))
                 .perform(actionOnItem(allOf(hasDescendant(withText(yesterdaysDayOfWeek)), withId(R.id.card_view)), click()));
-        //onView(allOf(withParent(withId(R.id.action_bar_container)), withText(yesterdaysDayOfWeek)))
-        //        .check(matches(isDisplayed()));
+        onView(allOf(withParent(withId(R.id.action_bar)), withText(yesterdaysDayOfWeek)))
+                .check(matches(isDisplayed()));
     }
 
     //Task 7

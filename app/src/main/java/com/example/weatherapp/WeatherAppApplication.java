@@ -1,24 +1,23 @@
 package com.example.weatherapp;
 
 import android.app.Application;
+import android.util.Log;
 
 import dagger.ObjectGraph;
 
 public class WeatherAppApplication extends Application {
-    protected ObjectGraph objectGraph;
-    static WeatherAppApplication application;
+    private ObjectGraph objectGraph;
+    private static WeatherAppApplication application;
 
     @Override
     public void onCreate() {
         super.onCreate();
         application = this;
         objectGraph = ObjectGraph.create(getModules());
-        inject(this);
     }
 
     protected Object[] getModules() {
-        final Object[] modules = new Object[1];
-        modules[0] = new WeatherAppModule(this);
+        Object[] modules = {new WeatherAppModule(this)};
         return modules;
     }
 
