@@ -3,17 +3,19 @@ package com.example.weatherapp.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.weatherapp.WeatherAppApplication;
 import com.example.weatherapp.WeatherAppSharedPrefs;
 import com.example.weatherapp.data.WeatherContract;
 import com.example.weatherapp.services.WeatherService;
+import com.example.weatherapp.testUtils.IdlingWeatherResource;
 import com.example.weatherapp.testUtils.TestConstants;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,6 +25,8 @@ import javax.inject.Inject;
 
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.registerIdlingResources;
+import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -33,13 +37,24 @@ public class DetailsActivityTest {
     @Rule
     public ActivityTestRule<DetailsActivity> mActivityRule = new ActivityTestRule(DetailsActivity.class, false, false);
 
+    @Inject
     WeatherAppSharedPrefs sharedPrefs;
+
+    @Inject
+    IdlingWeatherResource resource;
 
     @Before
     public void setUp() {
-        sharedPrefs = new WeatherAppSharedPrefs(InstrumentationRegistry.getTargetContext());
+        //sharedPrefs = new WeatherAppSharedPrefs(InstrumentationRegistry.getTargetContext());
         getTargetContext().getSharedPreferences("com.example.weatherapp_preferences", 0).edit().clear().commit();
+        WeatherAppApplication.getInstance().inject(this);
         sharedPrefs.setLocationPrefs(TestConstants.DEFAULT_LOCATION);
+        registerIdlingResources(resource);
+    }
+
+    @After
+    public void tearDown() {
+        unregisterIdlingResources(resource);
     }
 
     @Test
