@@ -40,7 +40,6 @@ public class DetailsActivityTest {
     @Inject
     WeatherAppSharedPrefs sharedPrefs;
 
-    @Inject
     IdlingWeatherResource resource;
 
     @Before
@@ -49,6 +48,7 @@ public class DetailsActivityTest {
         getTargetContext().getSharedPreferences("com.example.weatherapp_preferences", 0).edit().clear().commit();
         WeatherAppApplication.getInstance().inject(this);
         sharedPrefs.setLocationPrefs(TestConstants.DEFAULT_LOCATION);
+        resource = new IdlingWeatherResource("", getTargetContext());
         registerIdlingResources(resource);
     }
 

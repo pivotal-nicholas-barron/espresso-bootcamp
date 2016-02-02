@@ -1,6 +1,8 @@
 package com.example.weatherapp;
 
 
+import android.util.Log;
+
 import com.example.weatherapp.activities.DetailsActivityTest;
 import com.example.weatherapp.activities.MainActivity;
 import com.example.weatherapp.activities.MainActivityTest;
@@ -12,7 +14,10 @@ import com.example.weatherapp.fragments.MainActivityFragment;
 import com.example.weatherapp.fragments.PreferenceFragment;
 import com.example.weatherapp.services.ForecastRetrofitService;
 import com.example.weatherapp.services.WeatherService;
+import com.example.weatherapp.services.WeatherServiceTest;
 import com.example.weatherapp.testUtils.IdlingWeatherResource;
+import com.squareup.okhttp.Dispatcher;
+import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;
 
@@ -21,60 +26,44 @@ import dagger.Provides;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
-@Module(injects = {
-            MainActivityFragment.class,
-            WeatherAppApplication.class,
-            PreferenceFragment.class,
-            ForecastAdapter.class,
-            DetailsActivityFragment.class,
-            MainActivity.class,
-            WeatherService.class,
-            WeatherProvider.class,
-            IdlingWeatherResource.class,
-            DetailsActivityTest.class,
-            MainActivityTest.class
+@Module(includes = WeatherAppModule.class,
+        overrides = true,
+        library = true,
+        injects = {
+                IdlingWeatherResource.class,
+                DetailsActivityTest.class,
+                MainActivityTest.class
         })
 public class TestWeatherAppModule {
 
     private final WeatherAppApplication app;
 
+    @Provides
+    @Singleton
+    public android.app.Service provideWeatherService(){
+        return new WeatherServiceTest();
+    }
+
     public TestWeatherAppModule(WeatherAppApplication app) {
         this.app = app;
     }
-
-    //TODO find better workaround for overriding dagger dependencies, remove section below and update getModules() in app class
-
+/*
     @Provides
     @Singleton
-    IdlingWeatherResource provideIdlingWeatherResource(){
+    IdlingWeatherResource provideIdlingWeatherResource() {
         return new IdlingWeatherResource("Retrofit Resource", app.getApplicationContext());
     }
 
+
+
     @Provides
     @Singleton
-    Retrofit provideRetrofit() {
+    Retrofit provideRetrofit(IdlingWeatherResource resource) {
         return new Retrofit.Builder()
                 .baseUrl("http://api.openweathermap.org")
                 .addConverterFactory(GsonConverterFactory.create())
-                .callbackExecutor(this.provideIdlingWeatherResource())
+                .client((new OkHttpClient()).setDispatcher(new Dispatcher(resource)))
                 .build();
     }
-
-    @Provides
-    @Singleton
-    ForecastRetrofitService provideForecastService(Retrofit retrofit) {
-        return retrofit.create(ForecastRetrofitService.class);
-    }
-
-    @Provides
-    @Singleton
-    WeatherAppSharedPrefs providePreferenceManager() {
-        return new WeatherAppSharedPrefs(app.getApplicationContext());
-    }
-
-    @Provides
-    @Singleton
-    WeatherDBHelper provideWeatherDBHelper() {
-        return new WeatherDBHelper(app.getApplicationContext());
-    }
+*/
 }

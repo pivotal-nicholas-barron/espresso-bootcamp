@@ -3,6 +3,7 @@ package com.example.weatherapp.activities;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
@@ -18,10 +19,12 @@ import com.example.weatherapp.R;
 import com.example.weatherapp.WeatherAppApplication;
 import com.example.weatherapp.WeatherAppSharedPrefs;
 import com.example.weatherapp.data.WeatherContract;
+import com.example.weatherapp.testUtils.IdlingWeatherResource;
 import com.example.weatherapp.testUtils.TestConstants;
 
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -30,10 +33,14 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
+import retrofit.Retrofit;
+
 import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static android.support.test.espresso.Espresso.registerIdlingResources;
+import static android.support.test.espresso.Espresso.unregisterIdlingResources;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeDown;
@@ -45,6 +52,7 @@ import static android.support.test.espresso.intent.Intents.intending;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static android.support.test.espresso.matcher.CursorMatchers.withRowLong;
+import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -61,18 +69,28 @@ public class MainActivityTest {
     private static final String TAG = "ActivityTesting";
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(com.example.weatherapp.activities.MainActivity.class);;
+    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(com.example.weatherapp.activities.MainActivity.class);
+    ;
 
     @Inject
     WeatherAppSharedPrefs sharedPrefs;
 
+    IdlingWeatherResource resource;
+
     @Before
-    public void setUp(){
+    public void setUp() {
 
         getTargetContext()
                 .getSharedPreferences("com.example.weatherapp_preferences", 0).edit().clear().commit();
         WeatherAppApplication.getInstance().inject(this);
         sharedPrefs.setLocationPrefs(TestConstants.DEFAULT_LOCATION);
+        resource = new IdlingWeatherResource("WeatherService IdlingResource", getTargetContext());
+        registerIdlingResources(resource);
+    }
+
+    @After
+    public void tearDown(){
+        unregisterIdlingResources(resource);
     }
 
     //Task 0
@@ -105,9 +123,8 @@ public class MainActivityTest {
     //Task 3
     @Test
     public void whenPullingUpOnMainScreen_SnackbarContainingLocationNameIsDisplayed() {
-
         onView(withId(R.id.refresh_layout)).perform(swipeDown());
-        onView(allOf(withId(R.id.snackbar_text), withText(TestConstants.ALTERNATIVE_LOCATION)))
+        onView(allOf(withId(R.id.snackbar_text), withText(TestConstants.DEFAULT_LOCATION)))
                 .check(matches(isDisplayed()));
     }
 
@@ -157,7 +174,7 @@ public class MainActivityTest {
 
     //Task 8
     @Test
-    public void whenMapIsCalled_MapIntentIsSent(){
+    public void whenMapIsCalled_MapIntentIsSent() {
 
         Uri locationUri = Uri.parse("geo:0,0").buildUpon()
                 .appendQueryParameter("q", TestConstants.DEFAULT_LOCATION)

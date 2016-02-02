@@ -4,7 +4,7 @@ public class TestWeatherAppApplication extends WeatherAppApplication {
 
     @Override
     protected Object[] getModules() {
-        Object[] modules = {new TestWeatherAppModule(this)};
+        Object[] modules = {new WeatherAppModule(this), new TestWeatherAppModule(this)};
         return modules;
     }
 }
