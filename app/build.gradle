@@ -49,19 +49,13 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     compile 'com.squareup.dagger:dagger:1.2.2'
-    // Android JUnit Runner
     androidTestCompile 'com.android.support.test:runner:0.4.1'
-    // JUnit4 Rules
     androidTestCompile 'com.android.support.test:rules:0.4.1'
-    // Espresso core
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
-    // Espresso-contrib for DatePicker, RecyclerView, Drawer actions, Accessibility checks, CountingIdlingResource
     androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1'){
         exclude module: 'recyclerview-v7'
     }
     androidTestCompile 'com.android.support.test.espresso:espresso-intents:2.2.1'
-    // Espresso-web for WebView support
-    //androidTestCompile('com.android.support.test.espresso:espresso-web:2.2.1')
-    // Espresso-idling-resource for synchronization with background jobs
     androidTestCompile 'com.android.support.test.espresso:espresso-idling-resource:2.2.1'
+    androidTestCompile 'com.squareup.okhttp3:mockwebserver:3.1.2'
 }

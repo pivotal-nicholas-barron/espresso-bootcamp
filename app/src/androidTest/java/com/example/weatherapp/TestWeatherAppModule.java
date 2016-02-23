@@ -32,21 +32,17 @@ import retrofit.Retrofit;
         injects = {
                 IdlingWeatherResource.class,
                 DetailsActivityTest.class,
-                MainActivityTest.class
+                MainActivityTest.class,
+                TestWeatherAppTestRule.class
         })
-public class TestWeatherAppModule {
+public class TestWeatherAppModule{
 
     private final WeatherAppApplication app;
-
-    @Provides
-    @Singleton
-    public android.app.Service provideWeatherService(){
-        return new WeatherServiceTest();
-    }
 
     public TestWeatherAppModule(WeatherAppApplication app) {
         this.app = app;
     }
+
 /*
     @Provides
     @Singleton
@@ -54,16 +50,23 @@ public class TestWeatherAppModule {
         return new IdlingWeatherResource("Retrofit Resource", app.getApplicationContext());
     }
 
-
-
     @Provides
     @Singleton
-    Retrofit provideRetrofit(IdlingWeatherResource resource) {
-        return new Retrofit.Builder()
-                .baseUrl("http://api.openweathermap.org")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client((new OkHttpClient()).setDispatcher(new Dispatcher(resource)))
-                .build();
+    public android.app.Service provideWeatherService(){
+        return new WeatherServiceTest();
     }
 */
+    @Provides
+    @Singleton
+    Retrofit provideRetrofit() {
+        return new Retrofit.Builder()
+                .baseUrl("http://localhost:8080")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    @Provides
+    TestWeatherAppServer provideTestWeatherAppServer(){
+        return new TestWeatherAppServer();
+    }
 }

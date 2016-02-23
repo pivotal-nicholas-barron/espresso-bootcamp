@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.example.weatherapp.TestWeatherAppTestRule;
 import com.example.weatherapp.WeatherAppApplication;
 import com.example.weatherapp.WeatherAppSharedPrefs;
 import com.example.weatherapp.data.WeatherContract;
@@ -35,7 +36,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 public class DetailsActivityTest {
 
     @Rule
-    public ActivityTestRule<DetailsActivity> mActivityRule = new ActivityTestRule(DetailsActivity.class, false, false);
+    public TestWeatherAppTestRule mActivityRule = new TestWeatherAppTestRule(DetailsActivity.class, false, false);
 
     @Inject
     WeatherAppSharedPrefs sharedPrefs;
@@ -44,7 +45,7 @@ public class DetailsActivityTest {
 
     @Before
     public void setUp() {
-        //sharedPrefs = new WeatherAppSharedPrefs(InstrumentationRegistry.getTargetContext());
+
         getTargetContext().getSharedPreferences("com.example.weatherapp_preferences", 0).edit().clear().commit();
         WeatherAppApplication.getInstance().inject(this);
         sharedPrefs.setLocationPrefs(TestConstants.DEFAULT_LOCATION);

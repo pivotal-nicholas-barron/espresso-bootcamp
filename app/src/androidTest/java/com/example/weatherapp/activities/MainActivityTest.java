@@ -16,6 +16,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
 
 import com.example.weatherapp.R;
+import com.example.weatherapp.TestWeatherAppTestRule;
 import com.example.weatherapp.WeatherAppApplication;
 import com.example.weatherapp.WeatherAppSharedPrefs;
 import com.example.weatherapp.data.WeatherContract;
@@ -69,7 +70,7 @@ public class MainActivityTest {
     private static final String TAG = "ActivityTesting";
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<MainActivity>(com.example.weatherapp.activities.MainActivity.class);
+    public TestWeatherAppTestRule mActivityRule = new TestWeatherAppTestRule(com.example.weatherapp.activities.MainActivity.class);
     ;
 
     @Inject
